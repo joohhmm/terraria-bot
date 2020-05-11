@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 
 const server = require("./server.js");
+const {ip4} = require("./ip4.js");
 
 const config = require("./config.json");
 
@@ -10,7 +11,7 @@ bot.on("ready", () => {
   console.log("ready");
 });
 
-bot.on("message", (message) => {
+bot.on("message", async (message) => {
   if (message.content !== "!start") return;
   const res = server.startServer();
   if (res.status) {
@@ -18,7 +19,8 @@ bot.on("message", (message) => {
       `failed with error code: ${res.status}, error message: ${res.content}`
     );
   } else {
-    message.channel.send("server is starting");
+    
+    message.channel.send(`server is starting on ${await ip4()}:${config.port}`);
   }
 });
 
